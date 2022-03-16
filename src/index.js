@@ -1,20 +1,34 @@
 import './style/style.scss';
 
-console.log('hello world')
 
 let gallery = document.getElementById('gallery');
 
-let page = 1;
+let page;
+let search;
+
+let form = document.getElementById('form');
+form.addEventListener('submit', (e) => {
+	e.preventDefault();
+	gallery.innerHTML = ''
+	search = document.getElementById('search').value;
+	page = 1;
+	document.getElementById('loading').setAttribute('class', 'show');
+	fetchImages(page, search)
+})
 
 
-const fetchImages = (page) => {
-	fetch(`http://localhost:8080/search-image/cats/30/${page}`).then((res) => {
+const imgError = () => {
+	console.log('error loading image')
+}
+
+const fetchImages = (page, search) => {
+	fetch(`http://localhost:8080/search-image/${search}/30/${page}`).then((res) => {
 		return res.json()
 	}).then((response) => {
 		console.log(response)
 		console.log(page)
 		page++
-		document.getElementById('loading').classList.add('hide')
+		document.getElementById('loading').setAttribute('class', 'hide');
 
 		response.map((photo) => {
 			let imgContainer = document.createElement('div');
@@ -24,11 +38,14 @@ const fetchImages = (page) => {
 			img.setAttribute('alt', photo.title);
 			img.classList.add('lazy')
 			img.classList.add('loader')
+			let titleContainer = document.createElement('div');
+			titleContainer.setAttribute('class', 'titleContainer')
 			let title = document.createElement('p');
 			const titleText = document.createTextNode(photo.title);
 			title.appendChild(titleText);
+			titleContainer.appendChild(title);
 			imgContainer.appendChild(img);
-			imgContainer.appendChild(title);
+			imgContainer.appendChild(titleContainer);
 			gallery.appendChild(imgContainer);
 		})
 
@@ -55,7 +72,7 @@ const fetchImages = (page) => {
 					}
 				});
 				if (lazyloadImages.length == 0) {
-					fetchImages(page)
+					fetchImages(page, search)
 					document.removeEventListener("scroll", lazyload);
 					window.removeEventListener("resize", lazyload);
 				}
@@ -75,6 +92,3 @@ const fetchImages = (page) => {
 
 	})
 }
-
-console.log(page)
-fetchImages(page)

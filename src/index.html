@@ -8,7 +8,12 @@
     </head>
     <body>
         <h1>Welcome to the Flickr Gallery!</h1>
-        <div id="loading">Hämtar Flickr bilder...</div>
+        <form id="form">
+            <label for="search">Sök efter bilder på flikr</label>
+            <input type="text" id="search" name="search" />
+            <button type="submit">Sök</button>
+        </form>
+        <div id="loading" class="hide">Hämtar Flickr bilder...</div>
         <div id="gallery"></div>
     </body>
 </html>

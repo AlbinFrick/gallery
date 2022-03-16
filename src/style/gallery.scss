@@ -1,0 +1,46 @@
+#gallery {
+    margin: 0 auto;
+
+    width: min(1440px, 90%);
+
+    display: grid;
+    gap: $space-36;
+    @media screen and (min-width: 60em) {
+        gap: $space-72;
+    }
+
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+
+.imgContainer {
+    width: 100%;
+
+    border-radius: 1rem;
+    overflow: hidden;
+    aspect-ratio: 1/1.1;
+
+    display: grid;
+    & > * {
+        grid-column: 1 /2;
+        grid-row: 1 /2;
+    }
+
+    img {
+        width: 100%;
+        aspect-ratio: 1/1;
+        object-fit: cover;
+    }
+    .titleContainer {
+        width: 80%;
+
+        background-color: $color--white;
+        align-self: end;
+        justify-self: center;
+        text-align: center;
+
+        p {
+            color: black;
+            font-size: 1.2em;
+        }
+    }
+}

@@ -5,5 +5,7 @@
     display: none;
 }
 .loader {
-    background: transparent url('../../assets/loading.svg') center no-repeat;
+    background-image: url('../../assets/loading.svg');
+
+    background-position: 50% 50%;
 }
