@@ -1,0 +1,33 @@
+@import '../variables.scss';
+@import './button.scss';
+@import './input.scss';
+
+#form {
+    width: 100%;
+    display: flex;
+    gap: $space-16;
+    justify-content: center;
+    @media screen and (max-width: 28em) {
+        flex-wrap: wrap;
+        justify-content: start;
+    }
+    label {
+        display: flex;
+        flex-direction: column;
+    }
+    input {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 0.5rem 0.2rem;
+    }
+    .form__button {
+        background: #00d19f;
+        color: #ffffff;
+        &:hover,
+        &:focus {
+            background: #056c54;
+        }
+    }
+
+    margin-bottom: $space-36;
+}
