@@ -13,6 +13,7 @@ form.addEventListener('submit', (e) => {
 	search = document.getElementById('search').value;
 	page = 1;
 	document.getElementById('loading').setAttribute('class', 'show');
+	setLoaderMessage('Hämtar bilder från Flickr...')
 	fetchImages(page, search)
 })
 
@@ -24,6 +25,7 @@ const toggleImg = (imgContainer) => {
 }
 
 var lazyloadThrottleTimeout;
+
 const lazyload = () => {
 	var lazyloadImages = document.getElementsByClassName('lazy')
 	lazyloadImages = Array.prototype.slice.call(lazyloadImages)
@@ -47,31 +49,53 @@ const lazyload = () => {
 	}, 20);
 }
 
-const buildImage = (photo) => {
-	let imgContainer = document.createElement('figure');
-	imgContainer.classList.add('imgContainer');
+const buildImageCard = (photo) => {
 	let img = document.createElement('img');
 	img.setAttribute('data-src', photo.imgURI + '_m.jpg');
 	img.setAttribute('alt', photo.title);
 	img.classList.add('lazy')
 	img.classList.add('loader')
+
+	img.addEventListener('error', (e) => {
+		//Borde sättas till den lokal bild på någotvis
+		img.src = 'https://thumbs.dreamstime.com/b/error-rubber-stamp-word-error-inside-illustration-109026446.jpg'
+		img.nextElementSibling.innerHTML = 'Ingen bild hittades'
+	})
+
+	let imgContainer = document.createElement('figure');
+	imgContainer.classList.add('imgContainer');
+	imgContainer.tabIndex = 0;
 	imgContainer.addEventListener('click', () => toggleImg(imgContainer))
+
 	let title = document.createElement('figcaption');
 	title.setAttribute('class', 'titleContainer')
-	const titleText = document.createTextNode(photo.title ? photo.title : 'Ingen titel hittades');
+	let titleText = document.createTextNode(photo.title ? photo.title : 'Ingen titel hittades');
+
 	title.appendChild(titleText);
 	imgContainer.appendChild(img);
 	imgContainer.appendChild(title);
 	gallery.appendChild(imgContainer);
 }
 
+
+const setErrorMessage = (message) => {
+	document.getElementById('errorMessage').innerHTML = message
+}
+const setLoaderMessage = (message) => {
+	document.getElementById('loading').innerHTML = message
+}
+
 const fetchImages = (page, search) => {
-	fetch(`http://localhost:8080/search-image/${search}/30/${page}`).then((res) => {
+	fetch(`http://localhost:8080/search-image/${search}/40/${page}`).then((res) => {
+		if (!res.ok) {
+			throw new Error(`${res.status}, Whoops kunde inte hämta dina bilder.`);
+		}
+		setErrorMessage('')
 		return res.json()
 	}).then((response) => {
-		document.getElementById('loading').setAttribute('class', 'hide');
+		setLoaderMessage('')
 		response.map((photo) => {
-			buildImage(photo)
+			buildImageCard(photo)
 		})
 		lazyload()
 		document.addEventListener("scroll", lazyload);
@@ -79,9 +103,7 @@ const fetchImages = (page, search) => {
 
 	}).catch((error) => {
 		console.log(error)
-		var err = document.createAttribute('div');
-		const errText = document.createTextNode('Kunde tyvärr inte hämta några bilder. Prova att ladda om din webbläsare.');
-		err.appendChild(errText)
-		gallery.appendChild(err)
+		setErrorMessage(error.message)
+		setLoaderMessage('')
 	})
 }
