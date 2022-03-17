@@ -11,18 +11,19 @@
         <form id="form">
             <label for="search">
                 Sök på en kategori
-                <input type="text" id="search" name="search" />
+                <input type="search" id="search" name="search" />
             </label>
             <button class="form__button" type="submit">Sök</button>
         </form>
-        <div id="loading" class="hide">Hämtar bilder från Flickr...</div>
+        <div id="loading" class="hide"></div>
+        <div id="errorMessage"></div>
         <div id="gallery"></div>
-        <div id="image-modal">
+        <!-- <div id="image-modal">
             <img src="" alt="" />
             <div class="buttonContainer">
                 <button class="arrowButton"><</button
                 ><button class="arrowButton">></button>
             </div>
-        </div>
+        </div> -->
     </body>
 </html>
