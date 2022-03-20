@@ -1,10 +1,10 @@
 import { buildImageCard } from "./gallary"
+import { setErrorMessage, setLoaderMessage } from "./utils"
+import { lazyload } from "./Lazyload"
 
-const setErrorMessage = (message) => {
-	document.getElementById('errorMessage').innerHTML = message
-}
+let page = 0;
 
-export const fetchImages = (page, search) => {
+const fetchImages = (page, search) => {
 	fetch(`http://localhost:8080/search-image/${search}/40/${page}`).then((res) => {
 		if (!res.ok) {
 			throw new Error(`${res.status}, Whoops kunde inte hämta dina bilder.`);
@@ -19,10 +19,16 @@ export const fetchImages = (page, search) => {
 		lazyload()
 		document.addEventListener("scroll", lazyload);
 		window.addEventListener("resize", lazyload);
+		return response;
 
 	}).catch((error) => {
-		console.log(error)
+		console.error(error)
 		setErrorMessage(error.message)
 		setLoaderMessage('')
 	})
+}
+
+export const fetchNextPage = (search) => {
+	page++
+	fetchImages(page, search)
 }

@@ -1,31 +1,53 @@
 import './style/style.scss';
 
 
+
 let gallery = document.getElementById('gallery');
 
 let page;
 let search;
 
+
+/**
+ * TODO: Add to Form.js
+ * 
+ * !Dependencies: 
+ * !gallery
+ * !Be able to rest page number
+ * !SetLoaderMessage()
+ * !fetchImages()
+ */
 let form = document.getElementById('form');
 form.addEventListener('submit', (e) => {
 	e.preventDefault();
-	gallery.innerHTML = ''
+
 	search = document.getElementById('search').value;
+	if (!search) {
+		setSearchLabelMessage('Skriva något i sökfältet för att se bilder')
+		document.getElementById('searchLabel').classList.add('error')
+		return
+	}
+	setSearchLabelMessage('Sök på en kategori')
+	document.getElementById('searchLabel').classList.remove('error')
+
+	gallery.innerHTML = ''
 	page = 1;
 	document.getElementById('loading').setAttribute('class', 'show');
 	setLoaderMessage('Hämtar bilder från Flickr...')
 	fetchImages(page, search)
 })
 
-
-
-
 const toggleImg = (imgContainer) => {
-	imgContainer.classList.contains('big') ? imgContainer.classList.remove('big') : imgContainer.classList.add('big')
+	imgContainer.classList.toggle('big');
 }
 
+/**
+ * TODO: Add to lazyload.js
+ * 
+ * !Dependencies: 
+ * !fetchImages()
+ */
 var lazyloadThrottleTimeout;
-
 const lazyload = () => {
 	var lazyloadImages = document.getElementsByClassName('lazy')
 	lazyloadImages = Array.prototype.slice.call(lazyloadImages)
@@ -49,6 +71,13 @@ const lazyload = () => {
 	}, 20);
 }
 
+
+/**
+ * TODO: Add to gallery.js
+ * ! Dependencies: 
+ * !gallery
+ * @param {*} photo 
+ */
 const buildImageCard = (photo) => {
 	let img = document.createElement('img');
 	img.setAttribute('data-src', photo.imgURI + '_m.jpg');
@@ -78,12 +107,39 @@ const buildImageCard = (photo) => {
 }
 
 
+/**
+ *	TODO: Move to utils.js or gallery.js
+ * @param {*} message 
+ */
 const setErrorMessage = (message) => {
 	document.getElementById('errorMessage').innerHTML = message
 }
+
+/**
+ *	TODO: Move to utils.js or gallery.js
+ * @param {*} message 
+ */
 const setLoaderMessage = (message) => {
 	document.getElementById('loading').innerHTML = message
 }
+
+const setSearchLabelMessage = (message) => {
+	document.getElementById('searchLabel').firstChild.textContent = message
+}
+
+
+/**
+ * TODO: Move to fetchFromAPI.js
+ * 
+ * !Dependencies:
+ * ! setErrorMessage() 
+ * ! setLoaderMessage() 
+ * ! buildImageCard() 
+ * ! lazyload() 
+ * ! lazyload() 
+ * @param {*} page 
+ * @param {*} search 
+ */
 
 const fetchImages = (page, search) => {
 	fetch(`http://localhost:8080/search-image/${search}/40/${page}`).then((res) => {
