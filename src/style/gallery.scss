@@ -31,12 +31,10 @@
         outline: 2px dashed $color--primary;
         outline-offset: 4px;
     }
-
     img {
         width: 100%;
-        aspect-ratio: 1/1;
-        object-fit: cover;
     }
+
     .titleContainer {
         width: 85%;
         display: inline-block;
@@ -52,15 +50,5 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
-}
-
-.big {
-    position: absolute;
-    width: 50%;
-    margin: 0 auto;
-
-    .titleContainer {
-        width: 100%;
     }
 }

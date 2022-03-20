@@ -1,4 +1,4 @@
-import { setSearchLabelMessage, setLoaderMessage } from "./utils";
+import { setSearchLabelMessage, setLoaderMessage, setErrorMessage } from "./utils";
 import { fetchNextPage } from "./fetchFromAPI";
 
 /**
@@ -8,16 +8,17 @@ import { fetchNextPage } from "./fetchFromAPI";
 export const searchForm = () => {
 	let form = document.getElementById('form');
 	form.addEventListener('submit', (e) => {
+		setErrorMessage('')
 		e.preventDefault();
 		let search = getSearchQuery()
-		formValidation(search);
-		resetGallery()
-		document.getElementById('loading').setAttribute('class', 'show');
-		setLoaderMessage('Hämtar bilder från Flickr...')
-		fetchNextPage(search)
+		if (formValidation(search)) {
+			resetGallery()
+			document.getElementById('loading').setAttribute('class', 'show');
+			setLoaderMessage('Hämtar bilder från Flickr...')
+			fetchNextPage(search)
+		}
 	})
 }
-
 
 /**
  * Checks is the input has a value. 
@@ -28,12 +29,13 @@ export const searchForm = () => {
  */
 const formValidation = (search) => {
 	if (!search) {
-		setSearchLabelMessage('Skriva något i sökfältet för att se bilder')
+		setSearchLabelMessage('Skriv något i sökfältet för att se bilder')
 		document.getElementById('searchLabel').classList.add('error')
-		return
+		return false;
 	}
 	setSearchLabelMessage('Sök på en kategori')
 	document.getElementById('searchLabel').classList.remove('error')
+	return true;
 }
 
 

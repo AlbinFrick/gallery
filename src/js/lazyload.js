@@ -1,50 +1,33 @@
+/**
+ * This file handles the lazy loading of the images in the gallery.
+ * This version uses the intersectionObserver for observing if an image are close to the viewport and thereby should load.
+ * When all images are loaded in to the page more are fetched from the API.
+ */
 import { fetchNextPage } from "./fetchFromAPI";
 
-// var lazyloadThrottleTimeout;
 export const lazyload = () => {
 	let lazyImages = document.querySelectorAll('.lazy')
 	const lazyImageObserver = new IntersectionObserver((entries) => {
 		entries.forEach(entry => {
-			lazyImages = document.querySelectorAll('.lazy');
+			// Updates how many images are to load
+			lazyImages = document.querySelectorAll('.lazy')
+
 			if (entry.isIntersecting) {
 				let img = entry.target;
-				img.setAttribute('src', img.getAttribute('data-src'))
+				// Sets the data-src as src and adds the size suffix and extension
+				img.setAttribute('src', img.getAttribute('data-src') + '_m.jpg')
 				img.classList.remove('lazy')
-				lazyImageObserver.unobserve(img)
+				lazyImageObserver.unobserve(entry.target)
+				// If there are not more images to lazy load fetch more from the API
 				if (lazyImages.length == 1)
 					fetchNextPage()
 			}
 		})
 	}, {
 		rootMargin: '200px'
-	}
-	)
-
-	lazyImages.forEach(lazyImage => {
-
-		lazyImageObserver.observe(lazyImage)
 	})
 
-
-
-
-
-	// lazyloadImages = Array.prototype.slice.call(lazyloadImages)
-	// if (lazyloadThrottleTimeout) {
-	// 	clearTimeout(lazyloadThrottleTimeout);
-	// }
-	// lazyloadThrottleTimeout = setTimeout(function () {
-	// 	var scrollTop = window.pageYOffset;
-	// 	lazyloadImages.forEach(function (img) {
-	// 		if (img.offsetTop < (window.innerHeight + scrollTop)) {
-	// 			img.src = img.dataset.src;
-	// 			img.classList.remove('lazy');
-	// 		}
-	// 	});
-	// 	if (lazyloadImages.length == 0) {
-	// 		fetchNextPage(search)
-	// 		document.removeEventListener("scroll", lazyload);
-	// 		window.removeEventListener("resize", lazyload);
-	// 	}
-	// }, 20);
+	lazyImages.forEach(lazyImage => {
+		lazyImageObserver.observe(lazyImage)
+	})
 }

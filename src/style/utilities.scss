@@ -4,6 +4,14 @@
 .hide {
     display: none;
 }
+.disable {
+    opacity: 0.5;
+
+    cursor: unset;
+    &:focus {
+        outline: 0;
+    }
+}
 
 .error {
     color: red;
@@ -14,4 +22,9 @@
     background-image: url('../../assets/loading.svg');
 
     background-position: 50% 50%;
+}
+
+.aspect1to1 {
+    aspect-ratio: 1/1;
+    object-fit: cover;
 }

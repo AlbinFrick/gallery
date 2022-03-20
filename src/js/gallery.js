@@ -1,13 +1,16 @@
-const toggleImg = (imgContainer) => {
-	imgContainer.classList.contains('big') ? imgContainer.classList.remove('big') : imgContainer.classList.add('big')
-}
+/**
+ * Builds the image gallery from the API response.
+ */
+
+import { toggleShowImageInModal, closeModal } from './modal'
 
 
 export const buildImageCard = (photo) => {
 	let img = document.createElement('img');
-	img.setAttribute('data-src', photo.imgURI + '_m.jpg');
+	img.setAttribute('data-src', photo.imgURL);
 	img.setAttribute('alt', photo.title);
 	img.classList.add('lazy')
+	img.classList.add('aspect1to1')
 	img.classList.add('loader')
 
 	img.addEventListener('error', (e) => {
@@ -15,11 +18,17 @@ export const buildImageCard = (photo) => {
 		img.src = 'https://thumbs.dreamstime.com/b/error-rubber-stamp-word-error-inside-illustration-109026446.jpg'
 		img.nextElementSibling.innerHTML = 'Trasig bild'
 	})
-
 	let imgContainer = document.createElement('figure');
 	imgContainer.classList.add('imgContainer');
 	imgContainer.tabIndex = 0;
-	imgContainer.addEventListener('click', () => toggleImg(imgContainer))
+	imgContainer.addEventListener('click', () => showImageInModal(imgContainer.children.item(0)))
+	imgContainer.addEventListener('keydown', (e) => {
+		if (e.key == 'Enter')
+			toggleShowImageInModal(imgContainer.children.item(0))
+		if (e.key == 'Escape')
+			closeModal()
+
+	})
 
 	let title = document.createElement('figcaption');
 	title.setAttribute('class', 'titleContainer')

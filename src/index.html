@@ -22,7 +22,7 @@
             <button class="form__button" type="submit">Sök</button>
         </form>
         <div id="loading" class="hide"></div>
-        <div id="errorMessage"></div>
+        <div id="errorMessage" class="error"></div>
 
         <div id="backToTop" role="button" aria-label="Skrolla till toppen av sidan">
             <svg
@@ -38,12 +38,8 @@
             </svg>
         </div>
         <div id="gallery"></div>
-        <!-- <div id="image-modal">
-            <img src="" alt="" />
-            <div class="buttonContainer">
-                <button class="arrowButton"><</button
-                ><button class="arrowButton">></button>
-            </div>
-        </div> -->
+        <div id="image-modal" role="dialog" aria-modal="true">
+            <img id="modalImg" class="aspect1to1 loader" src="" alt="" />
+        </div>
     </body>
 </html>
