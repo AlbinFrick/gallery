@@ -1,5 +1,3 @@
-# README
-
 # Flickr Gallery
 Detta är en hemsida som visar bilder från flickrs API. 
 Här nedan finns information för hur man kör igång allting.
