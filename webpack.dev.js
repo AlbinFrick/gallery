@@ -1,9 +1,17 @@
 const path = require('path');
+const base = require('./webpack.base')
+const { merge } = require('webpack-merge')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = {
+
+module.exports = merge(base, {
 	mode: 'development',
-	entry: './src/js/index.js',
+	devServer: {
+		// contentBase: path.join(__dirname, 'public'),
+		static: './dist',
+		compress: true,
+		port: 3000
+	},
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: './src/index.html',
@@ -11,7 +19,6 @@ module.exports = {
 			inject: 'body'
 		})
 	],
-
 	module: {
 		rules: [
 			{
@@ -21,19 +28,13 @@ module.exports = {
 					'css-loader',
 					'sass-loader',
 				]
-			}
+			},
 		]
-	},
 
-	devServer: {
-		// contentBase: path.join(__dirname, 'public'),
-		static: './dist',
-		compress: true,
-		port: 3000
 	},
 	output: {
-		filename: 'main.bundle.js',
+		filename: '[name].js',
 		path: path.resolve(__dirname, 'dist'),
 		clean: true,
 	},
-}
+})
