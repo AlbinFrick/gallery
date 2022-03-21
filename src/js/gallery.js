@@ -1,21 +1,23 @@
+import { toggleShowImageInModal, closeModal } from './modal'
+import loading from '../assets/loading.svg'
+import errorSvg from '../assets/error.svg'
+
 /**
  * Builds the image gallery from the API response.
  */
 
-import { toggleShowImageInModal, closeModal } from './modal'
-
-
 export const buildImageCard = (photo) => {
 	let img = document.createElement('img');
 	img.setAttribute('data-src', photo.imgURL);
+	img.setAttribute('src', loading);
 	img.setAttribute('alt', photo.title);
 	img.classList.add('lazy')
 	img.classList.add('aspect1to1')
-	img.classList.add('loader')
 
 	img.addEventListener('error', (e) => {
 		//Borde sättas till den lokal bild på någotvis
-		img.src = 'https://thumbs.dreamstime.com/b/error-rubber-stamp-word-error-inside-illustration-109026446.jpg'
+		img.src = errorSvg;
+		img.classList.add('imgError');
 		img.nextElementSibling.innerHTML = 'Trasig bild'
 	})
 	let imgContainer = document.createElement('figure');
