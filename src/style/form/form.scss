@@ -21,11 +21,12 @@
         padding: 0.5rem 0.2rem;
     }
     .form__button {
-        background: #00d19f;
+        background: #01654e;
         color: #ffffff;
+        transition: background 150ms ease-in-out;
         &:hover,
         &:focus {
-            background: #056c54;
+            background: #009270;
         }
     }
 

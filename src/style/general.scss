@@ -2,6 +2,7 @@ html {
     scroll-behavior: smooth;
 }
 body {
+    block-size: border-box;
     color: $color--white;
     background-color: $bg;
     font-family: 'Montserrat', sans-serif;
@@ -44,7 +45,7 @@ img {
         display: grid;
         place-content: center;
     }
-    & svg {
-        width: 100%;
+    & img {
+        width: 3rem;
     }
 }
